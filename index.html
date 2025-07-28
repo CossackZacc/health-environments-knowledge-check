@@ -24,6 +24,18 @@
       padding: 15px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+    .correct {
+      background-color: #e8f5e9;
+      border-left: 6px solid #2e7d32;
+    }
+    .incorrect {
+      background-color: #ffebee;
+      border-left: 6px solid #c62828;
+    }
+    .correct-answer {
+      font-style: italic;
+      color: #2e7d32;
+    }
     button {
       background-color: #2e7d32;
       color: white;
@@ -49,7 +61,7 @@
     <!-- Questions injected by JavaScript -->
   </form>
   <div style="text-align:center">
-    <button onclick="submitQuiz()">Submit Quiz</button>
+    <button type="button" onclick="submitQuiz()">Submit Quiz</button>
   </div>
   <div id="results"></div>
 
@@ -112,6 +124,7 @@
     questions.forEach((question, index) => {
       const qDiv = document.createElement('div');
       qDiv.classList.add('question');
+      qDiv.setAttribute('id', `question-${index}`);
       qDiv.innerHTML = `<p><strong>${index + 1}. ${question.q}</strong></p>`;
       question.options.forEach((opt, i) => {
         const id = `q${index}_opt${i}`;
@@ -126,10 +139,22 @@
       let score = 0;
       questions.forEach((q, i) => {
         const selected = document.querySelector(`input[name='q${i}']:checked`);
-        if (selected && parseInt(selected.value) === q.answer) {
-          score++;
+        const qBlock = document.getElementById(`question-${i}`);
+        if (selected) {
+          const selectedVal = parseInt(selected.value);
+          if (selectedVal === q.answer) {
+            score++;
+            qBlock.classList.add('correct');
+          } else {
+            qBlock.classList.add('incorrect');
+            qBlock.innerHTML += `<p class='correct-answer'>✔ Correct Answer: ${q.options[q.answer]}</p>`;
+          }
+        } else {
+          qBlock.classList.add('incorrect');
+          qBlock.innerHTML += `<p class='correct-answer'>✔ Correct Answer: ${q.options[q.answer]}</p>`;
         }
       });
+
       const resultMsg = score === 10 ? "🥇 Perfect Score! You're a healthy food environment hero!" :
                         score >= 7 ? `👍 Great job! You scored ${score}/10.` :
                         score >= 4 ? `⚠️ Not bad—but time for a healthy refresher! Score: ${score}/10.` :
