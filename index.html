@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Healthy Food Environments Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f9f4;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #2e7d32;
+    }
+    .question {
+      margin-bottom: 20px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    button {
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1b5e20;
+    }
+    #results {
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🍏 Healthy Food Environments Quiz</h1>
+  <form id="quizForm">
+    <!-- Questions injected by JavaScript -->
+  </form>
+  <div style="text-align:center">
+    <button onclick="submitQuiz()">Submit Quiz</button>
+  </div>
+  <div id="results"></div>
+
+  <script>
+    const questions = [
+      {
+        q: "What percentage of U.S. deaths are caused by chronic diseases annually?",
+        options: ["30%", "50%", "70%", "90%"],
+        answer: 2
+      },
+      {
+        q: "Which group is more likely to lack access to healthy food options?",
+        options: ["Wealthy neighborhoods", "Suburban schools", "Low-income communities", "Fast food workers"],
+        answer: 2
+      },
+      {
+        q: "Which is NOT a setting where nutrition standards can be applied?",
+        options: ["Hospitals", "Corner stores", "Worksites", "Food pantries"],
+        answer: 1
+      },
+      {
+        q: "What does behavioral design influence?",
+        options: ["Building construction", "Food and beverage choices", "Fitness equipment use", "Food labeling laws"],
+        answer: 1
+      },
+      {
+        q: "What program reimburses early care centers for serving healthy meals?",
+        options: ["WIC", "Child and Adult Care Food Program", "SNAP", "Medicaid"],
+        answer: 1
+      },
+      {
+        q: "What are produce prescription programs designed to do?",
+        options: ["Offer free food to farmers", "Encourage sugary food reduction", "Give vouchers for fruits & veggies", "Label organic food"],
+        answer: 2
+      },
+      {
+        q: "Which organization provides food service guidelines for federal facilities?",
+        options: ["CDC", "USDA", "FDA", "EPA"],
+        answer: 0
+      },
+      {
+        q: "What can schools do to increase fruit and vegetable access?",
+        options: ["Install salad bars", "Serve more pizza", "Limit vending machines", "Ban outside food"],
+        answer: 0
+      },
+      {
+        q: "Why is water access important in schools?",
+        options: ["For emergency use", "To reduce sugary drink consumption", "For washing hands", "To fill up pools"],
+        answer: 1
+      },
+      {
+        q: "What is a food retail venue example?",
+        options: ["Hospital cafeteria", "Food pantry", "Farmers market", "Vending machine"],
+        answer: 2
+      }
+    ];
+
+    const form = document.getElementById('quizForm');
+
+    questions.forEach((question, index) => {
+      const qDiv = document.createElement('div');
+      qDiv.classList.add('question');
+      qDiv.innerHTML = `<p><strong>${index + 1}. ${question.q}</strong></p>`;
+      question.options.forEach((opt, i) => {
+        const id = `q${index}_opt${i}`;
+        qDiv.innerHTML += `
+          <label><input type="radio" name="q${index}" value="${i}" id="${id}"> ${opt}</label><br>
+        `;
+      });
+      form.appendChild(qDiv);
+    });
+
+    function submitQuiz() {
+      let score = 0;
+      questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name='q${i}']:checked`);
+        if (selected && parseInt(selected.value) === q.answer) {
+          score++;
+        }
+      });
+      const resultMsg = score === 10 ? "🥇 Perfect Score! You're a healthy food environment hero!" :
+                        score >= 7 ? `👍 Great job! You scored ${score}/10.` :
+                        score >= 4 ? `⚠️ Not bad—but time for a healthy refresher! Score: ${score}/10.` :
+                        `🚨 Uh-oh! Score: ${score}/10. Let’s work on your food environment knowledge!`;
+      document.getElementById('results').innerText = resultMsg;
+    }
+  </script>
+</body>
+</html>
